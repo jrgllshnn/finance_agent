@@ -1,0 +1,32 @@
+name: Daily news run
+on:
+  schedule:
+    - cron: "0 7 * * *"     # 07:00 UTC — change to hit your local time
+  workflow_dispatch:          # enables the manual "Run workflow" button
+
+permissions:
+  contents: write             # lets the run commit news.db + index.html back
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Run agent and publish
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          USE_GEMINI: "true"
+        run: |
+          python agent.py
+          python publish.py
+      - name: Commit results
+        run: |
+          git config user.name "news-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add news.db index.html
+          git commit -m "Daily update" || echo "nothing to commit"
+          git push
