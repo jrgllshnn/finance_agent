@@ -23,7 +23,7 @@ load_dotenv()
 # ---------------------------------------------------------------------------
 # CONFIG
 # ---------------------------------------------------------------------------
-USE_GEMINI = True  
+USE_GEMINI = os.environ.get("USE_GEMINI", "false").lower() == "true"
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 _GEMINI_CLIENT = None  
 DB_PATH = "news.db" # the output path
