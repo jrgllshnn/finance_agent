@@ -1,7 +1,7 @@
 name: Daily news run
 on:
   schedule:
-    - cron: "0 7 * * *"     # 07:00 UTC — change to hit your local time
+    - cron: "0 4 * * *"     # 07:00 UTC — change to hit your local time
   workflow_dispatch:          # enables the manual "Run workflow" button
 
 permissions:
